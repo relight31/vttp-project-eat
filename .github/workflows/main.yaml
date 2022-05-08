@@ -16,6 +16,8 @@ jobs:
         with:
           maven-version: '3.8.4' 
       - name: Run test
+        env: 
+          TIH_API_KEY: ${{ secrets.TIH_API_KEY }}
         run: mvn clean verify
       - name: Generate coverage badge
         uses: cicirello/jacoco-badge-generator@v2
@@ -26,7 +28,7 @@ jobs:
       - name: Upload Jacoco badge to DigitalOcean spaces
         uses: BetaHuhn/do-spaces-action@v2
         with:
-          access_key: ${{ secrets.ACCESS_KEY}}
+          access_key: ${{ secrets.ACCESS_KEY }}
           secret_key: ${{ secrets.SECRET_KEY }}
           space_name: filebucket
           space_region: sgp1
