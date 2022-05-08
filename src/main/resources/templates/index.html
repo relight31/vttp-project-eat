@@ -14,7 +14,7 @@
   </head>
   <body>
     <div class="container">
-      <form action="/results" method="get">
+      <form action="/results" method="post">
         <div class="row">
           <div class="col">
             <h1 align="center">Hi There,</h1>
@@ -23,6 +23,10 @@
             <h2 align="center">Where would you like to eat today?</h2>
           </div>
         </div>
+        <div class="row">
+          <input type="text" name="keyword" id="" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
       </form>
     </div>
   </body>

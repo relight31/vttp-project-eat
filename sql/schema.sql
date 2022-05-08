@@ -10,23 +10,25 @@ create table users(
 );
 
 create table comments(
-    comment_id int auto_increment primary key
+    comment_id int auto_increment primary key,
     rating int,
     user_id char(8),
     text varchar(256),
     listing_id varchar(256),
 
-    constraint fk_user_id
+    constraint fk_user_id_comments
         foreign key(user_id)
         references users(user_id)
 );
 
 create table history(
+    search_id int auto_increment primary key,
     user_id char(8),
     keyword varchar(128),
     nextToken varchar(256),
+    date date,
 
-    constraint fk_user_id
+    constraint fk_user_id_history
         foreign key(user_id)
         references users(user_id)
 )
