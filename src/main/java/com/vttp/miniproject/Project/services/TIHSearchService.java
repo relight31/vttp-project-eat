@@ -31,6 +31,7 @@ public class TIHSearchService {
     public List<Listing> chooseRandom3() {
         List<Listing> listings = new LinkedList<Listing>();
         return listings;
+        // TODO: randomised searchterms and listings
     }
 
     public List<Listing> keywordChoose3(String keyword) {
@@ -50,6 +51,7 @@ public class TIHSearchService {
         JsonObject object = reader.readObject();
         JsonArray dataArray = object.getJsonArray("data");
         // grab 3 random items and convert into listing objects
+        // TODO: randomise retrieved listings
         List<Listing> listings = dataArray.stream()
                 .limit(3)
                 .map(value -> createFromJSON(value.asJsonObject()))
