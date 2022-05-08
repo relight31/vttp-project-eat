@@ -18,6 +18,7 @@ jobs:
       - name: Run test
         env: 
           TIH_API_KEY: ${{ secrets.TIH_API_KEY }}
+          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
         run: mvn clean verify
       - name: Generate coverage badge
         uses: cicirello/jacoco-badge-generator@v2
