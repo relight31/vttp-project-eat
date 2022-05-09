@@ -1,6 +1,7 @@
 package com.vttp.miniproject.Project.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import com.vttp.miniproject.Project.models.Listing;
@@ -24,8 +25,10 @@ public class SearchController {
     @GetMapping(path = "/results")
     public ModelAndView chooseForMe() {
         ModelAndView mav = new ModelAndView();
-        List<Listing> listings = searchService.chooseRandom3();
-        mav.addObject("listings", listings);
+        Optional<List<Listing>> listings = searchService.chooseRandom3();
+        if (listings.isPresent()) {
+            mav.addObject("listings", listings.get());
+        }
         mav.setViewName("results");
         return mav;
     }
@@ -34,8 +37,10 @@ public class SearchController {
     public ModelAndView keywordSearch(@RequestBody MultiValueMap<String, String> form) {
         ModelAndView mav = new ModelAndView();
         String keyword = form.getFirst("keyword");
-        List<Listing> listings = searchService.keywordChoose3(keyword);
-        mav.addObject("listings", listings);
+        Optional<List<Listing>> listings = searchService.keywordChoose3(keyword);
+        if (listings.isPresent()) {
+            mav.addObject("listings", listings.get());
+        }
         mav.setViewName("results");
         return mav;
     }

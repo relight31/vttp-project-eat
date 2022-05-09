@@ -1,8 +1,9 @@
 package com.vttp.miniproject.Project.services;
 
 import java.io.StringReader;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import com.vttp.miniproject.Project.models.Listing;
 
@@ -26,15 +27,25 @@ public class TIHSearchService {
     @Value("${tih.api.key}")
     private String apiKey;
 
-    private final String apiUrl = "https://tih-api.stb.gov.sg/content/v1/food-beverages/search";
+    private Random rand = new Random();
 
-    public List<Listing> chooseRandom3() {
-        List<Listing> listings = new LinkedList<Listing>();
-        return listings;
-        // TODO: randomised searchterms and listings
+    private final String apiUrl = "https://tih-api.stb.gov.sg/content/v1/food-beverages/search";
+    private final String uuidUrl = "https://tih-api.stb.gov.sg/content/v1/food-beverages";
+
+    public Optional<List<Listing>> chooseRandom3() {
+        String[] categories = new String[] {
+                "cafes",
+                "dim sum",
+                "zi char",
+                "indian",
+                "korean",
+                "mookata"
+        };
+        int index = rand.nextInt(0, categories.length);
+        return keywordChoose3(categories[index]);
     }
 
-    public List<Listing> keywordChoose3(String keyword) {
+    public Optional<List<Listing>> keywordChoose3(String keyword) {
         String searchByKeyword = UriComponentsBuilder
                 .fromUriString(apiUrl)
                 .queryParam("keyword", keyword)
@@ -49,14 +60,45 @@ public class TIHSearchService {
         ResponseEntity<String> resp = template.exchange(req, String.class);
         JsonReader reader = Json.createReader(new StringReader(resp.getBody()));
         JsonObject object = reader.readObject();
-        JsonArray dataArray = object.getJsonArray("data");
-        // grab 3 random items and convert into listing objects
-        // TODO: randomise retrieved listings
-        List<Listing> listings = dataArray.stream()
-                .limit(3)
-                .map(value -> createFromJSON(value.asJsonObject()))
-                .toList();
-        // return list
-        return listings;
+        if (object.getJsonObject("status").getInt("code") == 200) {
+            JsonArray dataArray = object.getJsonArray("data");
+            // grab 3 random items and convert into listing objects
+            List<Listing> listings = rand.ints(0, dataArray.size())
+                    .distinct()
+                    .limit(3)
+                    .mapToObj(i -> createFromSearchJSON(dataArray.get(i).asJsonObject()))
+                    .toList();
+            // return list
+            return Optional.of(listings);
+        } else {
+            return Optional.empty();
+        }
+
+    }
+
+    public Optional<Listing> searchListingByUuid(String uuid) {
+        String searchByUuid = UriComponentsBuilder
+                .fromUriString(uuidUrl)
+                .queryParam("uuid", uuid)
+                .queryParam("language", "en")
+                .queryParam("apikey", apiKey)
+                .toUriString();
+        // make API call
+        RequestEntity<Void> req = RequestEntity.get(searchByUuid)
+                .accept(MediaType.APPLICATION_JSON)
+                .build();
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<String> resp = template.exchange(req, String.class);
+        JsonReader reader = Json.createReader(new StringReader(resp.getBody()));
+        JsonObject object = reader.readObject();
+        if (object.getJsonObject("status").getInt("code") == 200) {
+            JsonArray dataArray = object.getJsonArray("data");
+            Listing listing = createFromUuidJSON(dataArray
+                    .get(0)
+                    .asJsonObject());
+            return Optional.of(listing);
+        } else {
+            return Optional.empty();
+        }
     }
 }
