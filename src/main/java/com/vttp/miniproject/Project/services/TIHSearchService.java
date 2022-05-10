@@ -29,18 +29,42 @@ public class TIHSearchService {
 
     private Random rand = new Random();
 
+    private String[] categories = new String[] {
+            "cafes",
+            "dim sum",
+            "zi char",
+            "indian",
+            "korean",
+            "mookata",
+            "steak",
+            "french",
+            "thai",
+            "burger",
+            "italian",
+            "pasta",
+            "pizza",
+            "sushi",
+            "japanese",
+            "buffet",
+            "chinese",
+            "vegan",
+            "mediterranean",
+            "seafood",
+            "turkish",
+            "hawker",
+            "malay",
+            "hot pot",
+            "bbq",
+            "mexican",
+            "ramen",
+            "spanish",
+            "western"
+    };
+
     private final String apiUrl = "https://tih-api.stb.gov.sg/content/v1/food-beverages/search";
     private final String uuidUrl = "https://tih-api.stb.gov.sg/content/v1/food-beverages";
 
     public Optional<List<Listing>> chooseRandom3() {
-        String[] categories = new String[] {
-                "cafes",
-                "dim sum",
-                "zi char",
-                "indian",
-                "korean",
-                "mookata"
-        };
         int index = rand.nextInt(0, categories.length);
         return keywordChoose3(categories[index]);
     }
