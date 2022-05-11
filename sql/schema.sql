@@ -5,8 +5,7 @@ use eatproject;
 
 create table users(
     user_id char(8) primary key,
-    username varchar(16) not null,
-    password varchar(256)
+    username varchar(16) not null
 );
 
 create table comments(
