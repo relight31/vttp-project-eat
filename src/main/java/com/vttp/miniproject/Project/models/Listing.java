@@ -6,68 +6,21 @@ public class Listing {
     private String name;
     private String thumbnail;
     private String uuidPath;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
     private String contact;
     private String body;
-    private float rating;
+    private String description;
+    private double rating;
     private String website;
     private String nextToken;
 
-    public String getContact() {
-        return this.contact;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getBody() {
-        return this.body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public float getRating() {
-        return this.rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
-    public String getWebsite() {
-        return this.website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public String getNextToken() {
-        return this.nextToken;
-    }
-
-    public void setNextToken(String nextToken) {
-        this.nextToken = nextToken;
-    }
-
-    public float getLatitude() {
-        return this.latitude;
-    }
-
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
-
-    public float getLongitude() {
-        return this.longitude;
-    }
-
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -94,6 +47,62 @@ public class Listing {
         this.uuidPath = uuidPath;
     }
 
+    public double getLatitude() {
+        return this.latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return this.longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getContact() {
+        return this.contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getBody() {
+        return this.body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public double getRating() {
+        return this.rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public String getWebsite() {
+        return this.website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getNextToken() {
+        return this.nextToken;
+    }
+
+    public void setNextToken(String nextToken) {
+        this.nextToken = nextToken;
+    }
+
     public static Listing createFromSearchJSON(JsonObject object) {
         Listing listing = new Listing();
         listing.setName(object.getString("name"));
@@ -105,7 +114,20 @@ public class Listing {
     }
 
     public static Listing createFromUuidJSON(JsonObject object) {
+        // TODO finish create method for listing page
         Listing listing = createFromSearchJSON(object);
+        listing.setLatitude(object.getJsonObject("location")
+                .getJsonNumber("latitude")
+                .doubleValue());
+        listing.setLongitude(object.getJsonObject("location")
+                .getJsonNumber("longitude")
+                .doubleValue());
+        listing.setBody(object.getString("body"));
+        listing.setContact(object.getJsonObject("contact")
+                .getString("primaryContactNo"));
+        listing.setWebsite(object.getString("officialWebsite"));
+        listing.setDescription(object.getString("description"));
+        listing.setRating(object.getJsonNumber("rating").doubleValue());
         return listing;
     }
 }

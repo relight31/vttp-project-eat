@@ -14,10 +14,12 @@
   </head>
   <body>
     <div class="container">
-      <form action="/results" method="post">
+      <form action="/auth/results" method="post">
         <div class="row">
           <div class="col">
-            <h1 align="center">Hi There,</h1>
+            <h1 align="center">
+              Hi There, <span th:text="${username}"></span>
+            </h1>
           </div>
           <div class="row">
             <h2 align="center">Where would you like to eat today?</h2>
@@ -27,6 +29,9 @@
           <input type="text" name="keyword" id="" />
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+      <form action="/auth/results" method="get">
+        <button type="submit" class="btn btn-primary">Choose for me</button>
       </form>
     </div>
   </body>

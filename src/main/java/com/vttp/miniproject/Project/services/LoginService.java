@@ -14,7 +14,7 @@ public class LoginService {
     @Autowired
     UserRepository userRepo;
 
-    public boolean authenticate(String username, String password) {
-        return userRepo.authenticate(username, password);
+    public boolean authenticate(String username) {
+        return userRepo.authenticate(username);
     }
 }

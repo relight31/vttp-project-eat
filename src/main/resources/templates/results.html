@@ -18,7 +18,7 @@
       <table class="table table-borderless">
         <tr>
           <td th:each="listing:${listings}">
-            <a href="@{'/listing/'+${listing.uuidPath}}">
+            <a th:href="@{'/auth/listing/'+${listing.uuidPath}}">
               <img
                 src="https://civilrights.msu.edu/_assets/images/placeholder/placeholder-200x200.jpg"
                 alt="placeholder"
@@ -30,6 +30,9 @@
           </td>
         </tr>
       </table>
+      <form action="/logout" method="get">
+        <button type="submit" class="btn btn-secondary">Logout</button>
+      </form>
     </div>
   </body>
 </html>

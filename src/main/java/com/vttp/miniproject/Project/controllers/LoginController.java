@@ -35,10 +35,7 @@ public class LoginController {
             @RequestBody MultiValueMap<String, String> form,
             HttpSession session) {
         ModelAndView mav = new ModelAndView();
-        // TODO decide if keeping password requirement
-        if (loginService.authenticate(
-                form.getFirst("username"),
-                form.getFirst("password"))) {
+        if (loginService.authenticate(form.getFirst("username"))) {
             logger.info("Authentication successful");
             session.setAttribute("username", form.getFirst("username"));
             logger.info("Username " + form.getFirst("username") + " added to session");
