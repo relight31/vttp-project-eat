@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
     Logger logger = Logger.getLogger(AppConfig.class.getName());
+
     @Bean
     public FilterRegistrationBean<LoginFilter> registerFilter() {
         // create an instance of LoginFilter
@@ -24,6 +25,7 @@ public class AppConfig {
         logger.info("filter set");
         loginFilter.addUrlPatterns("/auth/*");
         logger.info("URL pattern set");
+        loginFilter.setOrder(2);
 
         return loginFilter;
     }

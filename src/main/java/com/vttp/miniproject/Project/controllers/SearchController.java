@@ -73,6 +73,7 @@ public class SearchController {
         Optional<Listing> listing = searchService.searchListingByUuid(uuid);
         if (listing.isPresent()) {
             mav.addObject("listing", listing.get());
+            logger.info("Website: "+listing.get().getWebsite());
             mav.addObject("gmapSrc", gmapService.getGmapsUrlString(listing.get()));
         } else {
             mav.setStatus(HttpStatus.BAD_REQUEST);

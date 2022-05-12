@@ -13,7 +13,32 @@
     />
   </head>
   <body>
-    <h1>Placeholder</h1>
-    <iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen th:src="${gmapSrc}"></iframe>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <img th:src="${listing.thumbnail}" th:alt="${listing.name}" />
+        </div>
+        <div class="col">
+          <h2 th:text="${listing.description}"></h2>
+          <p th:text="${listing.body}"></p>
+          <a th:if="${listing.hasWebsite}" th:href="${listing.website}"
+            >Website</a
+          >
+          <p th:unless="${listing.hasWebsite}">No website available</p>
+          <p>Google Rating: <span th:text="${listing.rating}"></span></p>
+        </div>
+      </div>
+      <div class="row">
+        <h1 th:text="${listing.name}"></h1>
+        <iframe
+          width="600"
+          height="450"
+          style="border: 0"
+          loading="lazy"
+          allowfullscreen
+          th:src="${gmapSrc}"
+        ></iframe>
+      </div>
+    </div>
   </body>
 </html>

@@ -13,7 +13,20 @@ public class Listing {
     private String description;
     private double rating;
     private String website;
+    private boolean hasWebsite;
     private String nextToken;
+
+    public boolean isHasWebsite() {
+        return !this.website.isBlank();
+    }
+
+    public boolean getHasWebsite() {
+        return this.hasWebsite;
+    }
+
+    public void setHasWebsite(boolean hasWebsite) {
+        this.hasWebsite = hasWebsite;
+    }
 
     public String getDescription() {
         return this.description;
