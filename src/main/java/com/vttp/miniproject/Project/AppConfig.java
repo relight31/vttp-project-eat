@@ -25,7 +25,6 @@ public class AppConfig {
         logger.info("filter set");
         loginFilter.addUrlPatterns("/auth/*");
         logger.info("URL pattern set");
-        loginFilter.setOrder(2);
 
         return loginFilter;
     }
