@@ -15,7 +15,7 @@ public class UserRepository {
     @Autowired
     JdbcTemplate template;
 
-    private final String SQL_AUTHENTICATE = "select username from users where username = ?";
+    private final String SQL_AUTHENTICATE = "select * from users where username = ?";
     private final String SQL_ADD_USER = "insert into users values (?,?)";
 
     public boolean authenticate(String username) {
@@ -37,5 +37,14 @@ public class UserRepository {
                 username);
         logger.info("Added " + result + " user to DB");
         return (result == 1 && authenticate(username));
+    }
+
+    public String getUserIdByUsername(String username) {
+        SqlRowSet result = template.queryForRowSet(SQL_AUTHENTICATE, username);
+        if (result.next()) {
+            return result.getString("user_id");
+        } else {
+            return null;
+        }
     }
 }

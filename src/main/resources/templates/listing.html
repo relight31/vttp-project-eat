@@ -15,6 +15,9 @@
   <body>
     <div class="container">
       <div class="row">
+        <h1 th:text="${listing.name}"></h1>
+      </div>
+      <div class="row">
         <div class="col">
           <img th:src="${listing.thumbnail}" th:alt="${listing.name}" />
         </div>
@@ -29,7 +32,6 @@
         </div>
       </div>
       <div class="row">
-        <h1 th:text="${listing.name}"></h1>
         <iframe
           width="600"
           height="450"
@@ -39,6 +41,29 @@
           th:src="${gmapSrc}"
         ></iframe>
       </div>
+      <div class="row">
+        <form action="/postcomment" method="post">
+          <input
+            type="text"
+            name="commentBody"
+            placeholder="Leave a comment here"
+          />
+          <button type="submit" class="btn btn-primary">Post comment</button>
+        </form>
+      </div>
+      <div class="row">
+        <h3 th:if="${lists.isEmpty(comments)}">
+          No comments yet. Leave a Comment.
+        </h3>
+        <table th:unless="${lists.isEmpty(comments)}" class="table">
+          <tr th:each="comment:${comments}">
+            <td th:text="comment.username"></td>
+            <td th:text="comment.rating"></td>
+            <td th:text="comment.description"></td>
+          </tr>
+        </table>
+      </div>
+      <button onclick="history.go(-1)" class="btn btn-primary">Back</button>
     </div>
   </body>
 </html>
