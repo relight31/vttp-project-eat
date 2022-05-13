@@ -127,7 +127,7 @@ public class Listing {
     }
 
     public static Listing createFromUuidJSON(JsonObject object) {
-        // TODO finish create method for listing page
+        // TODO finish create method for listing page, left thumbnail
         Listing listing = createFromSearchJSON(object);
         listing.setLatitude(object.getJsonObject("location")
                 .getJsonNumber("latitude")

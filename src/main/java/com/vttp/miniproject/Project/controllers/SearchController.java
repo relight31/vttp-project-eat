@@ -59,27 +59,31 @@ public class SearchController {
         Optional<List<Listing>> listings = searchService.keywordChoose3(keyword);
         if (listings.isPresent()) {
             mav.addObject("listings", listings.get());
+            mav.setViewName("results");
         } else {
             mav.setStatus(HttpStatus.BAD_REQUEST);
-            // TODO bad request
+            mav.setViewName("badrequest");
         }
-        mav.setViewName("results");
         return mav;
     }
 
     @GetMapping(path = "/listing/{uuid}")
-    public ModelAndView viewListing(@PathVariable String uuid) {
+    public ModelAndView viewListing(@PathVariable String uuid,
+            HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        session.setAttribute("uuid", uuid);
         Optional<Listing> listing = searchService.searchListingByUuid(uuid);
         if (listing.isPresent()) {
             mav.addObject("listing", listing.get());
-            logger.info("Website: "+listing.get().getWebsite());
+            logger.info("Website: " + listing.get().getWebsite());
             mav.addObject("gmapSrc", gmapService.getGmapsUrlString(listing.get()));
+            mav.setViewName("listing");
         } else {
             mav.setStatus(HttpStatus.BAD_REQUEST);
-            // TODO bad request view elements
+            mav.addObject("username",
+                    (String) session.getAttribute("username"));
+            mav.setViewName("badrequest");
         }
-        mav.setViewName("listing");
         return mav;
     }
 }
