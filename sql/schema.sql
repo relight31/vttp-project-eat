@@ -14,6 +14,7 @@ create table comments(
     user_id char(8),
     text varchar(256),
     listing_id varchar(256),
+    timestamp datetime default current_timestamp,
 
     constraint fk_user_id_comments
         foreign key(user_id)
@@ -28,6 +29,16 @@ create table history(
     date date,
 
     constraint fk_user_id_history
+        foreign key(user_id)
+        references users(user_id)
+);
+
+create table favourites(
+    favourite_id int auto_increment primary key,
+    user_id char(8),
+    listing_id varchar(256),
+
+    constraint fk_user_id_favourites
         foreign key(user_id)
         references users(user_id)
 )
