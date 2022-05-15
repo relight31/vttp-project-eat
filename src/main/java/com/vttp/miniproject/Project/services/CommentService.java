@@ -23,22 +23,22 @@ public class CommentService {
     @Transactional
     public void postComment(MultiValueMap<String, String> form,
             HttpSession session) {
-        // TODO complete comment transaction
         // sanitise input
         String commentBody = form.getFirst("commentBody");
         if (commentBody.trim().isBlank()) {
             throw new IllegalArgumentException("Comment body should not be empty");
         }
+        int rating = Integer.parseInt(form.getFirst("rating"));
         // create Comment object
         Comment comment = new Comment();
         comment.setCommentText(commentBody);
-        comment.setRating(1);
+        comment.setRating(rating);
         comment.setUsername((String) session.getAttribute("username"));
         // add comment object and session uuid to comment table
         if (!commentRepo.addComment(comment, session)) {
             throw new RuntimeException("Unable to add comment to database");
         }
-        // verify added correctly
+        // verify added correctly?
     }
 
     public List<Comment> getComments(HttpSession session) {

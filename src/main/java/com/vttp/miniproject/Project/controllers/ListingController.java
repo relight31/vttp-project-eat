@@ -13,8 +13,11 @@ import com.vttp.miniproject.Project.services.TIHSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,6 +49,32 @@ public class ListingController {
             mav.addObject("comments", commentService.getComments(session));
             mav.setViewName("listing");
         } else {
+            mav.setStatus(HttpStatus.BAD_REQUEST);
+            mav.addObject("username",
+                    (String) session.getAttribute("username"));
+            mav.setViewName("badrequest");
+        }
+        return mav;
+    }
+
+    @PostMapping(path = "/{uuid}/postcomment")
+    public ModelAndView postComment(
+            @PathVariable String uuid,
+            @RequestBody MultiValueMap<String, String> form,
+            HttpSession session) {
+        logger.info("calling viewListing");
+        ModelAndView mav = viewListing(uuid, session);
+        logger.info("called viewListing successfully");
+        if (mav.getStatus() == HttpStatus.BAD_REQUEST) {
+            logger.info("Failed to get listing from viewListing controller method");
+            return mav;
+        }
+        // view should be listing at this point
+        try {
+            commentService.postComment(form, session);
+            logger.info("Posted comment successfully");
+        } catch (RuntimeException e) {
+            logger.warning(e.getMessage());
             mav.setStatus(HttpStatus.BAD_REQUEST);
             mav.addObject("username",
                     (String) session.getAttribute("username"));

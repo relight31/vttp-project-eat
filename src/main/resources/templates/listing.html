@@ -47,7 +47,10 @@
       </div>
       <br />
       <div class="row">
-        <form th:action="@{'/auth/listing/'+uuid+'/postcomment'}" method="post">
+        <form
+          th:action="@{'/auth/listing/'+${uuid}+'/postcomment'}"
+          method="post"
+        >
           <textarea
             name="commentBody"
             cols="30"
@@ -55,6 +58,14 @@
             class="form-control"
             placeholder="Leave a comment here"
           ></textarea>
+          <label for="rating" class="form-label">Leave a rating</label>
+          <select name="rating" id="rating" class="form-select">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
           <br />
           <button type="submit" class="btn btn-primary">Post comment</button>
         </form>
@@ -65,15 +76,32 @@
           No comments yet. Leave a Comment.
         </h3>
         <table th:unless="${#lists.isEmpty(comments)}" class="table">
+          <thead>
+            <tr>
+              <th><h3>Comments</h3></th>
+            </tr>
+          </thead>
           <tr th:each="comment:${comments}">
-            <td th:text="comment.username"></td>
-            <td th:text="comment.rating"></td>
-            <td th:text="comment.description"></td>
+            <td>
+              <div class="row">
+                <p th:text="${comment.commentText}"></p>
+              </div>
+              <div class="row">
+                <p>
+                  Commented by: <span th:text="${comment.username}"></span
+                  ><br />
+                  Rating: <span th:text="${comment.rating}"></span>
+                </p>
+              </div>
+            </td>
           </tr>
         </table>
       </div>
       <br />
       <button onclick="history.go(-1)" class="btn btn-primary">Back</button>
+      <!-- TODO 
+      fix back button to go back to search result page after adding comments
+      consider using session variable to store number of pages/actions taken-->
     </div>
   </body>
 </html>
