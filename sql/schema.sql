@@ -41,4 +41,11 @@ create table favourites(
     constraint fk_user_id_favourites
         foreign key(user_id)
         references users(user_id)
-)
+);
+
+create view commentsview as
+    select u.username as username,
+    c.rating as rating,
+    c.text as text,
+    c.listing_id as uuid
+    from users u, comments c where u.user_id=c.user_id;

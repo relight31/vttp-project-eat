@@ -1,5 +1,6 @@
 package com.vttp.miniproject.Project.services;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -35,5 +36,12 @@ public class CommentService {
         // add comment object and session uuid to comment table
 
         // verify added correctly
+    }
+
+    public List<Comment> getComments(HttpSession session) {
+        String uuid = (String) session.getAttribute("uuid");
+        String username = (String) session.getAttribute("username");
+        List<Comment> comments = commentRepo.getCommentsByUserAndUuid(username, uuid);
+        return comments;
     }
 }

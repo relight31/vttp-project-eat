@@ -1,5 +1,6 @@
 package com.vttp.miniproject.Project.repositories;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,10 +10,11 @@ import com.vttp.miniproject.Project.models.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 @Repository
 public class CommentRepository {
-    private final String SQL_GET_COMMENTS_BY_USER_AND_UUID = "select * from comments where user_id ";
+    private final String SQL_GET_COMMENTS_BY_USER_AND_UUID = "select * from commentsview where username = ? and uuid = ?";
     private final String SQL_POST_COMMENT = "insert into comments (rating, user_id, text, listing_id) values (?,?,?,?)";
 
     @Autowired
@@ -24,7 +26,18 @@ public class CommentRepository {
     public List<Comment> getCommentsByUserAndUuid(
             String username,
             String uuid) {
-        return null;
+        SqlRowSet result = template.queryForRowSet(SQL_GET_COMMENTS_BY_USER_AND_UUID,
+                username,
+                uuid);
+        List<Comment> comments = new LinkedList<>();
+        while (result.next()) {
+            Comment comment = new Comment();
+            comment.setCommentText(result.getString("text"));
+            comment.setRating(result.getInt("rating"));
+            comment.setUsername(result.getString("username"));
+            comments.add(comment);
+        }
+        return comments;
     }
 
     public boolean addComment(Comment comment, HttpSession session) {
@@ -33,7 +46,7 @@ public class CommentRepository {
                 comment.getRating(),
                 userId,
                 comment.getCommentText(),
-                session.getAttribute("uuid"));
+                (String) session.getAttribute("uuid"));
         return result == 1;
     }
 }

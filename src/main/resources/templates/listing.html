@@ -41,21 +41,26 @@
           th:src="${gmapSrc}"
         ></iframe>
       </div>
+      <br />
       <div class="row">
         <form action="/postcomment" method="post">
-          <input
-            type="text"
+          <textarea
             name="commentBody"
+            cols="30"
+            rows="5"
+            class="form-control"
             placeholder="Leave a comment here"
-          />
+          ></textarea>
+          <br />
           <button type="submit" class="btn btn-primary">Post comment</button>
         </form>
       </div>
+      <br />
       <div class="row">
-        <h3 th:if="${lists.isEmpty(comments)}">
+        <h3 th:if="${#lists.isEmpty(comments)}">
           No comments yet. Leave a Comment.
         </h3>
-        <table th:unless="${lists.isEmpty(comments)}" class="table">
+        <table th:unless="${#lists.isEmpty(comments)}" class="table">
           <tr th:each="comment:${comments}">
             <td th:text="comment.username"></td>
             <td th:text="comment.rating"></td>
@@ -63,6 +68,7 @@
           </tr>
         </table>
       </div>
+      <br />
       <button onclick="history.go(-1)" class="btn btn-primary">Back</button>
     </div>
   </body>
