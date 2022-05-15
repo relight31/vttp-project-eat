@@ -23,6 +23,7 @@ public class CommentService {
     @Transactional
     public void postComment(MultiValueMap<String, String> form,
             HttpSession session) {
+        // TODO complete comment transaction
         // sanitise input
         String commentBody = form.getFirst("commentBody");
         if (commentBody.isBlank()) {
