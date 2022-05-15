@@ -14,7 +14,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 @Repository
 public class CommentRepository {
-    private final String SQL_GET_COMMENTS_BY_USER_AND_UUID = "select * from commentsview where username = ? and uuid = ?";
+    private final String SQL_GET_COMMENTS_BY_UUID = "select * from commentsview where uuid = ?";
     private final String SQL_POST_COMMENT = "insert into comments (rating, user_id, text, listing_id) values (?,?,?,?)";
 
     @Autowired
@@ -23,11 +23,9 @@ public class CommentRepository {
     @Autowired
     JdbcTemplate template;
 
-    public List<Comment> getCommentsByUserAndUuid(
-            String username,
-            String uuid) {
-        SqlRowSet result = template.queryForRowSet(SQL_GET_COMMENTS_BY_USER_AND_UUID,
-                username,
+    public List<Comment> getCommentsByUuid(String username, String uuid) {
+        SqlRowSet result = template.queryForRowSet(
+                SQL_GET_COMMENTS_BY_UUID,
                 uuid);
         List<Comment> comments = new LinkedList<>();
         while (result.next()) {

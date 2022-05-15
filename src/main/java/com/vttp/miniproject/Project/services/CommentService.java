@@ -26,7 +26,7 @@ public class CommentService {
         // TODO complete comment transaction
         // sanitise input
         String commentBody = form.getFirst("commentBody");
-        if (commentBody.isBlank()) {
+        if (commentBody.trim().isBlank()) {
             throw new IllegalArgumentException("Comment body should not be empty");
         }
         // create Comment object
@@ -35,14 +35,16 @@ public class CommentService {
         comment.setRating(1);
         comment.setUsername((String) session.getAttribute("username"));
         // add comment object and session uuid to comment table
-
+        if (!commentRepo.addComment(comment, session)) {
+            throw new RuntimeException("Unable to add comment to database");
+        }
         // verify added correctly
     }
 
     public List<Comment> getComments(HttpSession session) {
         String uuid = (String) session.getAttribute("uuid");
         String username = (String) session.getAttribute("username");
-        List<Comment> comments = commentRepo.getCommentsByUserAndUuid(username, uuid);
+        List<Comment> comments = commentRepo.getCommentsByUuid(username, uuid);
         return comments;
     }
 }
