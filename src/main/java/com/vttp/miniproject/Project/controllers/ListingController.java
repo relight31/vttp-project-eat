@@ -57,7 +57,7 @@ public class ListingController {
         return mav;
     }
 
-    @PostMapping(path = "/{uuid}/postcomment")
+    @PostMapping(path = "/{uuid}")
     public ModelAndView postComment(
             @PathVariable String uuid,
             @RequestBody MultiValueMap<String, String> form,
@@ -73,11 +73,13 @@ public class ListingController {
         try {
             commentService.postComment(form, session);
             logger.info("Posted comment successfully");
+            mav.addObject("comments", commentService.getComments(session));
         } catch (RuntimeException e) {
             logger.warning(e.getMessage());
             mav.setStatus(HttpStatus.BAD_REQUEST);
             mav.addObject("username",
                     (String) session.getAttribute("username"));
+            mav.addObject("errormessage", e.getMessage());
             mav.setViewName("badrequest");
         }
         return mav;

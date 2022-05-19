@@ -14,7 +14,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 @Repository
 public class CommentRepository {
-    private final String SQL_GET_COMMENTS_BY_UUID = "select * from commentsview where uuid = ?";
+    private final String SQL_GET_COMMENTS_BY_UUID = "select * from commentsview where uuid = ? order by comment_id desc";
     private final String SQL_POST_COMMENT = "insert into comments (rating, user_id, text, listing_id) values (?,?,?,?)";
 
     @Autowired
