@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 
 import com.vttp.miniproject.Project.models.Listing;
+import com.vttp.miniproject.Project.services.FavouriteService;
 import com.vttp.miniproject.Project.services.TIHSearchService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class SearchController {
 
     @Autowired
     private TIHSearchService searchService;
+
+    @Autowired
+    private FavouriteService favService;
 
     @GetMapping(path = "/search")
     public ModelAndView searchPage(HttpSession session) {
@@ -65,6 +69,46 @@ public class SearchController {
             mav.setStatus(HttpStatus.BAD_REQUEST);
             mav.addObject("username",
                     (String) session.getAttribute("username"));
+            mav.setViewName("badrequest");
+        }
+        return mav;
+    }
+
+    @GetMapping(path = "/favourites")
+    public ModelAndView getFavourites(HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        Optional<List<Listing>> opt = favService.getFavourites(session);
+        if (opt.isEmpty()) {
+            // no favourites yet
+        } else {
+            List<Listing> favourites = opt.get();
+            mav.addObject("favourites", favourites);
+        }
+        mav.setViewName("favourites");
+        return mav;
+    }
+
+    @PostMapping(path = "/favourites")
+    public ModelAndView addToFavourites(
+            HttpSession session,
+            @RequestBody MultiValueMap<String, String> form) {
+        ModelAndView mav = new ModelAndView();
+        try {
+            favService.addToFavourites(session, form.getFirst("uuid"));
+            Optional<List<Listing>> opt = favService.getFavourites(session);
+            if (opt.isEmpty()) {
+                // no favourites yet
+            } else {
+                List<Listing> favourites = opt.get();
+                mav.addObject("favourites", favourites);
+            }
+            mav.setViewName("favourites");
+            return mav;
+        } catch (Exception e) {
+            mav.setStatus(HttpStatus.BAD_REQUEST);
+            mav.addObject("username",
+                    (String) session.getAttribute("username"));
+            mav.addObject("errormessage", e.getMessage());
             mav.setViewName("badrequest");
         }
         return mav;

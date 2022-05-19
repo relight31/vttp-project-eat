@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import com.vttp.miniproject.Project.models.Listing;
 
@@ -24,6 +25,8 @@ import static com.vttp.miniproject.Project.models.Listing.*;
 
 @Service
 public class TIHSearchService {
+    Logger logger = Logger.getLogger(TIHSearchService.class.getName());
+
     @Value("${tih.api.key}")
     private String apiKey;
 

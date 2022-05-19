@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import com.vttp.miniproject.Project.models.Comment;
 import com.vttp.miniproject.Project.repositories.CommentRepository;
+import com.vttp.miniproject.Project.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,16 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepo;
 
+    @Autowired
+    UserRepository userRepo;
+
     @Transactional
     public void postComment(MultiValueMap<String, String> form,
             HttpSession session) {
+        // check username valid?
+        if (!userRepo.authenticate((String) session.getAttribute("username"))) {
+            throw new SecurityException("Corrupted session: Username not in DB");
+        }
         // sanitise input
         String commentBody = form.getFirst("commentBody");
         if (commentBody.trim().isBlank()) {

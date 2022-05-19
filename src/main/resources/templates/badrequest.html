@@ -18,7 +18,7 @@
         Sorry <span th:text="${username}"></span>, your request could not be
         completed at this time.
       </h1>
-      <h3>Reason: <span th:text="errormessage"></span></h3>
+      <h3>Reason: <span th:text="${errormessage}"></span></h3>
       <button onclick="history.go(-1)" class="btn btn-primary">Back</button>
     </div>
   </body>

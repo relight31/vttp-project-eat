@@ -16,6 +16,17 @@
     <div class="container">
       <div class="row">
         <h1 th:text="${listing.name}"></h1>
+        <form action="/auth/favourites" method="post" class="row">
+          <input
+            type="text"
+            name="uuid"
+            class="visually-hidden"
+            th:value="${uuid}"
+          />
+          <button type="submit" class="btn btn-primary">
+            Add to Favourites
+          </button>
+        </form>
       </div>
       <div class="row">
         <div class="col">
@@ -47,10 +58,7 @@
       </div>
       <br />
       <div class="row">
-        <form
-          th:action="@{'/auth/listing/'+${uuid}}"
-          method="post"
-        >
+        <form th:action="@{'/auth/listing/'+${uuid}}" method="post">
           <textarea
             name="commentBody"
             cols="30"
