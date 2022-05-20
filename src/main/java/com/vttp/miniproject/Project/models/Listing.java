@@ -1,10 +1,12 @@
 package com.vttp.miniproject.Project.models;
 
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 
 public class Listing {
     private String name;
     private String thumbnail;
+    private String image;
     private String uuidPath;
     private double latitude;
     private double longitude;
@@ -14,6 +16,14 @@ public class Listing {
     private double rating;
     private String website;
     private String nextToken;
+
+    public String getImage() {
+        return this.image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getDescription() {
         return this.description;
@@ -107,14 +117,18 @@ public class Listing {
         Listing listing = new Listing();
         listing.setName(object.getString("name"));
         listing.setUuidPath(object.getString("uuid"));
-        // TODO remove from final release
-        System.out.println(listing.getName());
-        System.out.println(listing.getUuidPath());
+        JsonArray thumbnails = object.getJsonArray("thumbnails");
+        if (thumbnails.size() > 0) {
+            String thumbnail = thumbnails.getJsonObject(0)
+                    .getString("url");
+            listing.setThumbnail(thumbnail);
+        }
+        // System.out.println(listing.getName());
+        // System.out.println(listing.getUuidPath());
         return listing;
     }
 
     public static Listing createFromUuidJSON(JsonObject object) {
-        // TODO finish thumbnail
         Listing listing = createFromSearchJSON(object);
         listing.setLatitude(object.getJsonObject("location")
                 .getJsonNumber("latitude")
@@ -122,6 +136,12 @@ public class Listing {
         listing.setLongitude(object.getJsonObject("location")
                 .getJsonNumber("longitude")
                 .doubleValue());
+        JsonArray images = object.getJsonArray("images");
+        if (images.size() > 0) {
+            String image = images.getJsonObject(0)
+                    .getString("url");
+            listing.setImage(image);
+        }
         listing.setBody(object.getString("body"));
         listing.setContact(object.getJsonObject("contact")
                 .getString("primaryContactNo"));

@@ -50,9 +50,10 @@
           <div class="col">
             <a th:href="@{'/auth/listing/'+${listing.uuidPath}}">
               <img
-                src="https://civilrights.msu.edu/_assets/images/placeholder/placeholder-200x200.jpg"
-                alt="placeholder"
+                th:src="${(listing.thumbnail != null AND !#strings.isEmpty(listing.thumbnail)) ? listing.thumbnail : 'https://civilrights.msu.edu/_assets/images/placeholder/placeholder-200x200.jpg'}"
+                th:alt="${listing.name}"
                 class="img-thumbnail"
+                style="width: 200px; height: auto"
               />
             </a>
           </div>

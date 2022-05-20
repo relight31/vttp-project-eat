@@ -56,7 +56,11 @@
       <br />
       <div class="row">
         <div class="col">
-          <img th:src="${listing.thumbnail}" th:alt="${listing.name}" />
+          <img
+            th:src="${(listing.image != null AND !#strings.isEmpty(listing.image)) ? listing.image : 'https://via.placeholder.com/500'}"
+            th:alt="${listing.name}"
+            style="max-width: 50vw; height: auto"
+          />
         </div>
         <div class="col">
           <h2 th:text="${listing.description}"></h2>
@@ -69,9 +73,10 @@
             th:href="${listing.website}"
             >Website</a
           >
-          <p>Google Rating: <span th:text="${listing.rating}"></span></p>
+          <h3>Google Rating: <span th:text="${listing.rating}"></span></h3>
         </div>
       </div>
+      <br />
       <div class="row">
         <iframe
           width="600"

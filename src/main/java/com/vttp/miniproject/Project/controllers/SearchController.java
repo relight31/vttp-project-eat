@@ -115,6 +115,4 @@ public class SearchController {
         }
         return mav;
     }
-
-    // TODO implement topbar and cleanup aesthetics
 }
