@@ -13,9 +13,32 @@
     />
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/auth/search" style="padding-left: 30px"
+        >Home</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/auth/favourites">Favourites</a>
+          <a href="/logout" class="nav-item nav-link">Logout</a>
+        </div>
+      </div>
+    </nav>
     <div class="container">
       <div class="row">
         <h1 th:text="${listing.name}"></h1>
+        <br />
         <form action="/auth/favourites" method="post" class="row">
           <input
             type="text"
@@ -23,11 +46,14 @@
             class="visually-hidden"
             th:value="${uuid}"
           />
-          <button type="submit" class="btn btn-primary">
-            Add to Favourites
-          </button>
+          <div class="row row-cols-auto">
+            <button type="submit" class="btn btn-secondary btn-sm">
+              Add to Favourites
+            </button>
+          </div>
         </form>
       </div>
+      <br />
       <div class="row">
         <div class="col">
           <img th:src="${listing.thumbnail}" th:alt="${listing.name}" />
@@ -75,13 +101,13 @@
             <option value="5">5</option>
           </select>
           <br />
-          <button type="submit" class="btn btn-primary">Post comment</button>
+          <button type="submit" class="btn btn-secondary">Post comment</button>
         </form>
       </div>
       <br />
-      <div class="row">
+      <div class="row row-cols-auto">
         <h3 th:if="${#lists.isEmpty(comments)}">
-          No comments yet. Leave a Comment.
+          No comments yet. Leave a Comment!
         </h3>
         <table th:unless="${#lists.isEmpty(comments)}" class="table">
           <thead>
@@ -106,7 +132,7 @@
         </table>
       </div>
       <br />
-      <button onclick="history.go(-1)" class="btn btn-primary">Back</button>
+      <button onclick="history.go(-1)" class="btn btn-secondary">Back</button>
       <!-- TODO 
       fix back button to go back to search result page after adding comments
       consider using session variable to store number of pages/actions taken-->

@@ -84,6 +84,8 @@ public class SearchController {
             List<Listing> favourites = opt.get();
             mav.addObject("favourites", favourites);
         }
+        mav.addObject("username",
+                (String) session.getAttribute("username"));
         mav.setViewName("favourites");
         return mav;
     }
@@ -113,4 +115,6 @@ public class SearchController {
         }
         return mav;
     }
+
+    // TODO implement topbar and cleanup aesthetics
 }

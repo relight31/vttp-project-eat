@@ -13,6 +13,26 @@
     />
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="" style="padding-left: 30px">Home</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/auth/favourites">Favourites</a>
+          <a href="/logout" class="nav-item nav-link">Logout</a>
+        </div>
+      </div>
+    </nav>
     <div class="container">
       <form action="/auth/results" method="post">
         <div class="row">
@@ -21,17 +41,64 @@
               Hi There, <span th:text="${username}"></span>
             </h1>
           </div>
+          <div class="row d-flex justify-content-center">
+            <div
+              style="
+                width: 20%;
+                height: 0;
+                padding-bottom: 20%;
+                position: relative;
+              "
+            >
+              <iframe
+                src="https://giphy.com/embed/iIAZe3cJp27DIK2GM3"
+                width="100%"
+                height="100%"
+                style="position: absolute"
+                frameborder="0"
+                class="giphy-embed"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <p>
+              <a
+                href="https://giphy.com/gifs/secret-disappear-here-i-am-iIAZe3cJp27DIK2GM3"
+                hidden
+                >via GIPHY</a
+              >
+            </p>
+          </div>
           <div class="row">
             <h2 align="center">Where would you like to eat today?</h2>
           </div>
         </div>
-        <div class="row">
-          <input type="text" name="keyword" id="" />
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter a cuisine or restaurant name here"
+            aria-label="Search keyword"
+            aria-describedby="basic-addon2"
+            name="keyword"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="Submit">
+              Search
+            </button>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
+        <!-- <div class="row">
+          <input type="text" name="keyword2" id="" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button> -->
       </form>
       <form action="/auth/results" method="get">
-        <button type="submit" class="btn btn-primary">Choose for me</button>
+        <h3 style="text-align: center">
+          Can't decide?
+          <button type="submit" class="btn btn-secondary btn-sm">
+            Choose for me
+          </button>
+        </h3>
       </form>
     </div>
   </body>
