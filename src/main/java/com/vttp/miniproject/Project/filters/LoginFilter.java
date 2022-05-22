@@ -14,7 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
+// if put component, filter will be instantiated twice, here and config
 public class LoginFilter implements Filter {
     Logger logger = Logger.getLogger(LoginFilter.class.getName());
 

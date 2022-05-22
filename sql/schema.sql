@@ -47,5 +47,6 @@ create view commentsview as
     select u.username as username,
     c.rating as rating,
     c.text as text,
-    c.listing_id as uuid
+    c.listing_id as uuid,
+    c.comment_id as comment_id
     from users u, comments c where u.user_id=c.user_id;
