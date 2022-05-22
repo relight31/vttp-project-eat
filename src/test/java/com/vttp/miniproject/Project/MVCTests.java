@@ -38,9 +38,9 @@ public class MVCTests {
         }
 
         MockHttpServletResponse resp = result.getResponse();
-        assertEquals(302, resp.getStatus()); // shd be 200
-        // TODO assertEquals("test", session.getAttribute("username"))
-        // cannot add session attribute??
+        assertEquals(302, resp.getStatus());
+        assertEquals("test", session.getAttribute("username"));
+        assertEquals("/auth/search", resp.getRedirectedUrl());
     }
 
     @Test
