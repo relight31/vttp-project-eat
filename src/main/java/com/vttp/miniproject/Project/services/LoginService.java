@@ -17,4 +17,8 @@ public class LoginService {
     public boolean authenticate(String username) {
         return userRepo.authenticate(username);
     }
+
+    public boolean addUser(String username) {
+        return userRepo.addUser(username);
+    }
 }

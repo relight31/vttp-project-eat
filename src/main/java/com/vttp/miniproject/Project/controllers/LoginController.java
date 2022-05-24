@@ -35,15 +35,16 @@ public class LoginController {
             @RequestBody MultiValueMap<String, String> form,
             HttpSession session) {
         ModelAndView mav = new ModelAndView();
-        if (loginService.authenticate(form.getFirst("username"))) {
+        if (form.getFirst("username") == null || form.getFirst("username").isBlank()) {
+            logger.info("Authentication failed");
+            mav.setStatus(HttpStatus.UNAUTHORIZED);
+            mav.setViewName("index");
+        } else if (loginService.authenticate(form.getFirst("username"))
+                || loginService.addUser(form.getFirst("username"))) {
             logger.info("Authentication successful");
             session.setAttribute("username", form.getFirst("username"));
             logger.info("Username " + form.getFirst("username") + " added to session");
             mav.setViewName("redirect:/auth/search");
-        } else {
-            logger.info("Authentication failed");
-            mav.setStatus(HttpStatus.UNAUTHORIZED);
-            mav.setViewName("index");
         }
         return mav;
     }
