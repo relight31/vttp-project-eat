@@ -84,19 +84,28 @@ public class TIHSearchService {
                 .accept(MediaType.APPLICATION_JSON)
                 .build();
         RestTemplate template = new RestTemplate();
+        logger.info("Before exchanging for resp");
         ResponseEntity<String> resp = template.exchange(req, String.class);
+        logger.info("resp returned");
         JsonReader reader = Json.createReader(new StringReader(resp.getBody()));
         JsonObject object = reader.readObject();
         if (object.getJsonObject("status").getInt("code") == 200) {
             JsonArray dataArray = object.getJsonArray("data");
+            logger.info("total " + dataArray.size() + " entries retrieved");
             // grab 3 random items and convert into listing objects
-            List<Listing> listings = rand.ints(0, dataArray.size())
-                    .distinct()
-                    .limit(3)
-                    .mapToObj(i -> createFromSearchJSON(dataArray.get(i).asJsonObject()))
-                    .toList();
-            // return list
-            return Optional.of(listings);
+            if (dataArray.size() > 3) {
+                List<Listing> listings = rand.ints(0, dataArray.size())
+                        .distinct()
+                        .limit(3)
+                        .mapToObj(i -> createFromSearchJSON(dataArray.get(i).asJsonObject()))
+                        .toList();
+                return Optional.of(listings);
+            } else {
+                List<Listing> listings = dataArray.stream()
+                        .map(i -> createFromSearchJSON(i.asJsonObject()))
+                        .toList();
+                return Optional.of(listings);
+            }
         } else {
             return Optional.empty();
         }

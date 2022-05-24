@@ -45,30 +45,16 @@
         >
           <a th:href="@{'/auth/listing/'+${listing.uuidPath}}">
             <img
-              src="https://civilrights.msu.edu/_assets/images/placeholder/placeholder-200x200.jpg"
-              alt="placeholder"
+              th:src="${(listing.thumbnail != null AND !#strings.isEmpty(listing.thumbnail)) ? listing.thumbnail : 'https://civilrights.msu.edu/_assets/images/placeholder/placeholder-200x200.jpg'}"
+              th:alt="${listing.name}"
               class="img-thumbnail"
+              style="width: 200px; height: auto"
             />
           </a>
           <br />
           <h3 th:text="${listing.name}" class="text-center"></h3>
         </div>
       </div>
-      <!-- <table class="table table-borderless">
-        <tr>
-          <td th:each="listing:${listings}">
-            <a th:href="@{'/auth/listing/'+${listing.uuidPath}}">
-              <img
-                src="https://civilrights.msu.edu/_assets/images/placeholder/placeholder-200x200.jpg"
-                alt="placeholder"
-                class="img-thumbnail"
-              />
-            </a>
-            <br />
-            <h3 th:text="${listing.name}" class="text-center"></h3>
-          </td>
-        </tr>
-      </table> -->
       <button onclick="history.go(-1)" class="btn btn-secondary">Back</button>
     </div>
   </body>
