@@ -115,17 +115,25 @@ public class TIHSearchService {
                 .accept(MediaType.APPLICATION_JSON)
                 .build();
         RestTemplate template = new RestTemplate();
-        ResponseEntity<String> resp = template.exchange(req, String.class);
-        JsonReader reader = Json.createReader(new StringReader(resp.getBody()));
-        JsonObject object = reader.readObject();
-        if (object.getJsonObject("status").getInt("code") == 200) {
-            JsonArray dataArray = object.getJsonArray("data");
-            Listing listing = createFromUuidJSON(dataArray
-                    .get(0)
-                    .asJsonObject());
-            return Optional.of(listing);
-        } else {
+        try {
+            ResponseEntity<String> resp = template.exchange(req, String.class);
+            // throws HttpClientErrorException$NotFound if bad uuid given
+            JsonReader reader = Json.createReader(
+                    new StringReader(
+                            resp.getBody()));
+            JsonObject object = reader.readObject();
+            if (object.getJsonObject("status").getInt("code") == 200) {
+                JsonArray dataArray = object.getJsonArray("data");
+                Listing listing = createFromUuidJSON(dataArray
+                        .get(0)
+                        .asJsonObject());
+                return Optional.of(listing);
+            } else {
+                return Optional.empty();
+            }
+        } catch (Exception e) {
             return Optional.empty();
         }
+
     }
 }

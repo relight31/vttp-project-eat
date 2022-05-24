@@ -52,6 +52,7 @@ public class ListingController {
             mav.setStatus(HttpStatus.BAD_REQUEST);
             mav.addObject("username",
                     (String) session.getAttribute("username"));
+            mav.addObject("errormessage", "Listing " + uuid + " could not be found");
             mav.setViewName("badrequest");
         }
         return mav;
